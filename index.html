@@ -1,0 +1,114 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <!-- 
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+   -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" crossorigin="anonymous" />
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+<div id='container'>
+  <h1>Due Date  <i class='fa fa-file-excel-o header-button' id='excel-export'></i></h1>
+  <input class="input" type="text" id="accountnumber" placeholder="Account #">
+  <input class="input" type="text" id="client" placeholder="Client">
+  <div style="font-size:18px;background-color:#f7f7f7;width:50%; float: left;">
+    $
+    <input style="width:96% !Important"  type="number" class="currency" min="0.01" max="2500.00" value="25.00" id="payment" />
+  </div>
+  <input style="width:30%;float:left" class="input" type="text" id="balance" placeholder="Balance: $1,203.44" readonly>
+  <input class="input" type="text" id="datepicker" value="Today" readonly="readonly">
+  <input class="input" type="text" id="entity" placeholder="Entity">
+  <input class="input" type="text" id="idnumber" placeholder="ID #">
+  <div class="btn" onClick="addAnother()">Add record</div>
+  <input class="input" type="text" id="vendor" placeholder="Vendor">
+  <table id="myTable" border="1" style="width:100%"></table>
+</div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
+<script src="js/main.js"></script>
+
+<script>
+  $(function() {
+  $("#datepicker").datepicker({
+    format: "mm/dd",
+    language: "en",
+    changeMonth: true,
+    changeYear: false
+  }).on('changeDate', function(e){
+    $(this).datepicker('hide');
+  });
+});
+</script>
+
+<!-- csv export --> 
+<script>
+  function download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // We have to create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Make sure that the link is not displayed
+    downloadLink.style.display = "none";
+
+    // Add the link to your DOM
+    document.body.appendChild(downloadLink);
+
+    // Lanzamos
+    downloadLink.click();
+  }
+
+  function export_table_to_csv(html, filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+    
+      for (var i = 0; i < rows.length; i++) {
+      var row = [], cols = rows[i].querySelectorAll("td, th");
+      
+          for (var j = 0; j < cols.length; j++) 
+              row.push(cols[j].innerText);
+          
+      csv.push(row.join(","));    
+    }
+    // Download CSV
+    download_csv(csv.join("\n"), filename);
+  }
+
+  document.getElementById("excel-export").addEventListener("click", function () {
+      var html = document.querySelector("table").outerHTML;
+    export_table_to_csv(html, "table.csv");
+  });
+</script>
+<!-- end csv export --> 
+
+<!-- Google Analytics: change UA-XXXXX-Y for site ID -->
+<script>
+window.ga = function (){ ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+</script>
+<script src="https://www.google-analytics.com/analytics.js" async defer></script>
+</body>
+
+</html>
