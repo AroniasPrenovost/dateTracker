@@ -156,5 +156,6 @@ input#datepicker:focus {
 
 .fa-file-excel-o {
   float: right;
+  cursor: pointer;
 }
 

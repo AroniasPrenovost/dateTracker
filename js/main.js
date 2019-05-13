@@ -8,7 +8,7 @@ var accountnumber = document.getElementById("accountnumber"),
     balance = document.getElementById("balance"),
     dueDate = document.getElementById("datepicker");
 
-function getManualInputs() {
+function getDatePicker() {
   let chosenDateNoYear = document.getElementById("datepicker").value,
   chosenDateYear = $( "#datepicker" ).datepicker( "getDate" ).getFullYear();
   return [chosenDateNoYear, chosenDateYear];
@@ -52,6 +52,14 @@ function populateListEntries(obj) {
   }
 }
 
+function getTodaysDate() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  return mm + '/' + dd + '/' + yyyy;
+}
+
 function changeTimeFormat(str) {
   var yy = str.substr(str.length - 4);
   var mm = str.substr(3, 2);
@@ -59,26 +67,11 @@ function changeTimeFormat(str) {
   return yy + '-' + dd + '-' + mm;
 }
 
-function addAnother() {
+// to do... 
+// pass in args to implicitly return hours or minutes 
 
-  // due date calulations 
-  var dateInfo = getManualInputs(); 
-
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
-  today = mm + '/' + dd + '/' + yyyy;
-
-  var dateItsDue = dateInfo[0] + '/' + dateInfo[1]; 
-  if (dateItsDue.includes('Today')) {
-    dateItsDue = today; 
-  }
-
-  // calculate difference between two dates
-  var date1 = changeTimeFormat(today);
-  var date2 = changeTimeFormat(dateItsDue); 
-
+// valid format is 'yy-dd-mm'
+function getTimeDifference(date1, date2, formatStr) {
   // First we split the values to arrays date1[0] is the year, [1] the month and [2] the day
   date1 = date1.split('-');
   date2 = date2.split('-');
@@ -88,8 +81,8 @@ function addAnother() {
   date2 = new Date(date2[0], date2[1], date2[2]);
 
   // We use the getTime() method and get the unixtime (in milliseconds, but we want seconds, therefore we divide it through 1000)
-  date1_unixtime = parseInt(date1.getTime() / 1000);
-  date2_unixtime = parseInt(date2.getTime() / 1000);
+  var date1_unixtime = parseInt(date1.getTime() / 1000);
+  var date2_unixtime = parseInt(date2.getTime() / 1000);
 
   // This is the calculated difference in seconds
   var timeDifference = date2_unixtime - date1_unixtime;
@@ -99,13 +92,35 @@ function addAnother() {
 
   // and finaly, in days :)
   var timeDifferenceInDays = timeDifferenceInHours  / 24;
-    if (Math.sign(timeDifferenceInDays) === 0) {
-      timeDifferenceInDays = 'Due today';
-    } else if (Math.sign(timeDifferenceInDays) === -1) {
-      timeDifferenceInDays = ('Overdue ' + timeDifferenceInDays + ' days').replace('-', '');
-    } else {
-      timeDifferenceInDays = timeDifferenceInDays + ' days';
-    }
+
+  // return one of them
+  if (formatStr === 'hours') {
+   return timeDifferenceInHours
+  } else {
+    return timeDifferenceInDays
+  }
+}
+
+function addAnother() {
+
+  // due date calulations 
+  var dateInfo = getDatePicker(); 
+  var todaysDate = getTodaysDate(); 
+  var dateDue = dateInfo[0] + '/' + dateInfo[1]; 
+  if (dateDue.includes('Today')) {
+    dateDue = todaysDate; 
+  }
+
+  // calculate difference between two dates 
+  var timeDifference = getTimeDifference(changeTimeFormat(todaysDate), changeTimeFormat(dateDue), 'days');
+
+  if (Math.sign(timeDifference) === 0) {
+    timeDifference = 'Due today';
+  } else if (Math.sign(timeDifference) === -1) {
+    timeDifference = ('Overdue ' + timeDifference + ' days').replace('-', '');
+  } else {
+    timeDifference = timeDifference + ' days';
+  }
 
   var listObj = {
     accountnumberRec: accountnumber.value,
@@ -115,8 +130,8 @@ function addAnother() {
     vendorRec: vendor.value,
     paymentRec: '$' + payment.value,
     balanceRec: balance.placeholder.replace('Balance:', '').trim(),
-    dueDateRec: dateItsDue,
-    timeLeftRec: timeDifferenceInDays,
+    dueDateRec: dateDue,
+    timeLeftRec: timeDifference,
     currencyTypeRec: 'USD',
     key: function(n) {
     return this[Object.keys(this)[n]];
