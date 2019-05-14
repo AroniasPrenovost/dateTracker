@@ -15,7 +15,7 @@ function getDatePicker() {
 }
 
 // initialize table 
-function buildHeader () {
+function buildHeader() {
   var columnHeaders = ['Account Number', 'Client', 'ID Number', 'Entity', 'Vendor', 'Payment', 'Balance', 'Due Date', 'Time Left']; 
   var rn = 1; // row # is 1 for initial build 
   var cn = columnHeaders.length; // column #
@@ -28,6 +28,7 @@ function buildHeader () {
         var div = document.createElement('div'); 
         var content = document.createTextNode(data); // will become sum of seconds
         div.classList.add(columnHeaders[c].toLowerCase().replace(' ', '_').trim());
+        div.id = columnHeaders[c].toLowerCase().replace(' ', '_').trim();
         div.appendChild(content);    
         insertedCell.appendChild(div);
       } 
@@ -45,10 +46,12 @@ function populateListEntries(obj) {
     var insertedCell = x.insertCell(c);
     var div = document.createElement('p'); 
     var data = obj.key(c); 
-    var content = document.createTextNode(data); // will become sum of seconds
-    div.classList.add('text');
-    div.appendChild(content);    
-    insertedCell.appendChild(div);
+    insertedCell.innerHTML = data;
+    insertedCell.classList.add('no-border');
+    // var content = document.createTextNode(data); // will become sum of seconds
+    // div.classList.add('text');
+    // div.appendChild(content); 
+    // insertedCell.appendChild(div);
   }
 }
 
@@ -93,12 +96,7 @@ function getTimeDifference(date1, date2, formatStr) {
   // and finaly, in days :)
   var timeDifferenceInDays = timeDifferenceInHours  / 24;
 
-  // return one of them
-  if (formatStr === 'hours') {
-   return timeDifferenceInHours
-  } else {
-    return timeDifferenceInDays
-  }
+  return timeDifferenceInDays
 }
 
 function addAnother() {
@@ -140,3 +138,5 @@ function addAnother() {
 
   populateListEntries(listObj);
 }
+
+

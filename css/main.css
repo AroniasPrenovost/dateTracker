@@ -16,22 +16,37 @@ body {
 
 table {
   background:rgba(0,0,0, 0);
-  border:none;
+  border: 1px solid #CCC;
+  border-collapse: collapse;
   padding: none;
-
   color: #2980b9;
   font-size: 18px;
 }
 
-tr:nth-child(1) {
-  text-align: center;
-  padding: 1.5em 2em 2em 1.5em;
-  box-sizing: border-box;
-  /*  border: 3px solid rgba(0,0,0, 0);*/
+div.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-bottom {
+  width:200px !important;
+  height:200px !important;
+  top: 0 0 0 0 !important;
+  background-color: #efefef;
+  position: absolute;
 }
 
 td {
-  border: 0px 0px 0px 0px;
+    border: none;
+    border-right:3px solid #3a7bd5;
+}
+
+tr:nth-child(1) {
+  text-align: left;
+  padding: 1.5em 2em 2em 1.5em;
+  border:3px solid #3a7bd5;
+  border-right: none;
+  border-left: none; 
+  box-sizing: border-box;
+}
+
+.no-border{ 
+text-decoration: none;
 }
 
 ul {

@@ -30,6 +30,9 @@
   <input class="input" type="text" id="idnumber" placeholder="ID #">
   <div class="btn" onClick="addAnother()">Add record</div>
   <input class="input" type="text" id="vendor" placeholder="Vendor">
+<br>
+  <input class="input" style="width:100%" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search for names.." title="Type in a name">
+
   <table id="myTable" border="1" style="width:100%"></table>
 </div>
 
@@ -39,6 +42,33 @@
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
 <script src="js/main.js"></script>
 
+<!-- Search table for keywords --> 
+<script>
+function searchTable() {
+  var input, filter, table, tr, td, cell, i, j;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 1; i < tr.length; i++) {
+    // Hide the row initially.
+    tr[i].style.display = "none";
+  
+    td = tr[i].getElementsByTagName("td");
+    for (var j = 0; j < td.length; j++) {
+    cell = tr[i].getElementsByTagName("td")[j];
+      if (cell) {
+        if (cell.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+        break;
+        } 
+      }
+    }
+  }
+}
+</script>
+
+<!-- datePicker --> 
 <script>
   $(function() {
   $("#datepicker").datepicker({
@@ -76,7 +106,6 @@
     // Add the link to your DOM
     document.body.appendChild(downloadLink);
 
-    // Lanzamos
     downloadLink.click();
   }
 
@@ -84,20 +113,19 @@
     var csv = [];
     var rows = document.querySelectorAll("table tr");
     
-      for (var i = 0; i < rows.length; i++) {
-      var row = [], cols = rows[i].querySelectorAll("td, th");
-      
-          for (var j = 0; j < cols.length; j++) 
-              row.push(cols[j].innerText);
-          
-      csv.push(row.join(","));    
+    for (var i = 0; i < rows.length; i++) {
+    var row = [], cols = rows[i].querySelectorAll("td, th");
+      for (var j = 0; j < cols.length; j++) {
+          row.push(cols[j].innerText);            
+        } 
+    csv.push(row.join(","));    
     }
-    // Download CSV
-    download_csv(csv.join("\n"), filename);
+  // Download CSV
+  download_csv(csv.join("\n"), filename);
   }
 
   document.getElementById("excel-export").addEventListener("click", function () {
-      var html = document.querySelector("table").outerHTML;
+    var html = document.querySelector("table").outerHTML;
     export_table_to_csv(html, "table.csv");
   });
 </script>
