@@ -5,7 +5,6 @@ var accountnumber = document.getElementById("accountnumber"),
     idnumber = document.getElementById("idnumber"),
     vendor = document.getElementById("vendor"),
     payment = document.getElementById("payment"),
-    balance = document.getElementById("balance"),
     dueDate = document.getElementById("datepicker");
 
 function getDatePicker() {
@@ -16,7 +15,7 @@ function getDatePicker() {
 
 // initialize table 
 function buildHeader() {
-  var columnHeaders = ['Account Number', 'Client', 'ID Number', 'Entity', 'Vendor', 'Payment', 'Balance', 'Due Date', 'Time Left']; 
+  var columnHeaders = ['Account Number', 'Client', 'ID Number', 'Entity', 'Vendor', 'Payment', 'Due Date', 'Time Left']; 
   var rn = 1; // row # is 1 for initial build 
   var cn = columnHeaders.length; // column #
   for(var r=0;r<parseInt(rn,10);r++) {
@@ -127,7 +126,6 @@ function addAnother() {
     idnumberRec: idnumber.value,
     vendorRec: vendor.value,
     paymentRec: '$' + payment.value,
-    balanceRec: balance.placeholder.replace('Balance:', '').trim(),
     dueDateRec: dateDue,
     timeLeftRec: timeDifference,
     currencyTypeRec: 'USD',
@@ -140,3 +138,26 @@ function addAnother() {
 }
 
 
+// search table for keywords 
+function searchTable() {
+  var input, filter, table, tr, td, cell, i, j;
+  input = document.getElementById("myInput");
+  filter = input.value.toLowerCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 1; i < tr.length; i++) {
+    // Hide the row initially.
+    tr[i].style.display = "none";
+  
+    td = tr[i].getElementsByTagName("td");
+    for (var j = 0; j < td.length; j++) {
+    cell = tr[i].getElementsByTagName("td")[j];
+      if (cell) {
+        if (cell.innerHTML.toLowerCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+        break;
+        } 
+      }
+    }
+  }
+}

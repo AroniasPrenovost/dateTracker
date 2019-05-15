@@ -11,7 +11,6 @@
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
    -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css" crossorigin="anonymous" />
-
   <meta name="theme-color" content="#fafafa">
 </head>
 
@@ -24,15 +23,15 @@
     $
     <input style="width:96% !Important"  type="number" class="currency" min="0.01" max="2500.00" value="25.00" id="payment" />
   </div>
-  <input style="width:30%;float:left" class="input" type="text" id="balance" placeholder="Balance: $1,203.44" readonly>
+<!--   <input style="width:30%;float:left" class="input" type="text" id="balance" placeholder="Balance: $1,203.44" readonly> -->
+  <input style="width:30%; float:left" class="input" type="text" id="vendor" placeholder="Vendor">
   <input class="input" type="text" id="datepicker" value="Today" readonly="readonly">
   <input class="input" type="text" id="entity" placeholder="Entity">
   <input class="input" type="text" id="idnumber" placeholder="ID #">
   <div class="btn" onClick="addAnother()">Add record</div>
-  <input class="input" type="text" id="vendor" placeholder="Vendor">
-<br>
-  <input class="input" style="width:100%" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search for names.." title="Type in a name">
 
+<br>
+  <input class="input" style="width:100%" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search table..." title="Search table...">
   <table id="myTable" border="1" style="width:100%"></table>
 </div>
 
@@ -41,32 +40,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
 <script src="js/main.js"></script>
-
-<!-- Search table for keywords --> 
-<script>
-function searchTable() {
-  var input, filter, table, tr, td, cell, i, j;
-  input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 1; i < tr.length; i++) {
-    // Hide the row initially.
-    tr[i].style.display = "none";
-  
-    td = tr[i].getElementsByTagName("td");
-    for (var j = 0; j < td.length; j++) {
-    cell = tr[i].getElementsByTagName("td")[j];
-      if (cell) {
-        if (cell.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-        break;
-        } 
-      }
-    }
-  }
-}
-</script>
 
 <!-- datePicker --> 
 <script>

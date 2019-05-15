@@ -24,11 +24,11 @@ table {
 }
 
 div.datepicker.datepicker-dropdown.dropdown-menu.datepicker-orient-bottom {
-  width:200px !important;
+/*  width:200px !important;
   height:200px !important;
-  top: 0 0 0 0 !important;
+  top: 0 0 0 0 !important;*/
   background-color: #efefef;
-  position: absolute;
+/*  position: absolute;*/
 }
 
 td {
@@ -148,6 +148,7 @@ ul#list > li {
 
 input#datepicker {
   width:20%;
+  float:right;
 }
 
 input#datepicker:focus {
